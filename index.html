@@ -1,0 +1,66 @@
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="jquery-2.1.4.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+    <div id="navbar"><span>Three.js - Rotating Cube</span></div>
+    <script src="js/three.min.js"></script>
+    <script>
+        // Creating scene where adding other objects
+        var scene = new THREE.Scene();
+        // Creating Camera object - PerspectiveCamera allows to see closer objects bogger 
+        // and smaller whenthez are away 
+        // (first parameter is field of view, second parameter is aspect ratio)
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight);
+        // Creating renderer - rendering engine 
+        var renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
+        // Designating the resolution of the renderer
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        // Appending the element from renderer to HTML body
+        $('body').append(renderer.domElement);
+
+        // Creating geometry for object
+        var geometry = new THREE.BoxGeometry(1, 1, 1);
+        // Adding 'skin' to the cue using material - MeshBasicMaterial which
+        // gives solid color with no reflection and lighting calculation to our object
+        var material = new THREE.MeshBasicMaterial({
+            color: 0xff0000
+        });
+        // Creating cube using Mesh object (first parameter is geometry, second parameter is material)
+        var cube = new THREE.Mesh(geometry, material);
+        // Adding cube to the scene
+        scene.add(cube);
+        // Giving position and rotation to our cube
+        cube.position.z = -5;
+        cube.rotation.x = 10;
+        cube.rotation.y = 5;
+
+        // Rendering the renderer on the screen giving it two parameters 
+        // (Frist parameter is scene, second parameter is camera)
+        renderer.render(scene, camera);
+
+
+        // Function respnsible for the animation
+        var animate = function() {
+            // Giving rotation to our cube
+            cube.rotation.x += 0.01
+                // Rendering it on the screen
+            renderer.render(scene, camera);
+            // Function invoked by browser at current display refresh rate
+            // it enables actions to be performed on each frame.
+            // Its parameter is our animate function - here recursion occurs
+            // and our cube is rotating all the time
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+
+</html>
